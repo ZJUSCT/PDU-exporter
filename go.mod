@@ -1,4 +1,4 @@
-module zjusct.com/pdu-exporter
+module github.com/ZJUSCT/PDU-exporter
 
 go 1.16
 
