@@ -36,10 +36,10 @@ var (
 )
 
 type conf struct {
-	A string
-	B struct {
-		RenamedC int   `yaml:"c"`
-		D        []int `yaml:",flow"`
+	Url string
+	Nodes []struct {
+		Name string `yaml:"name"`
+		Place []int `yaml:",flow"`
 	}
 }
 

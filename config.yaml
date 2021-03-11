@@ -1,13 +1,16 @@
-#url: 'http://localhost:8888/getstatus?a=0&'
-#nodes:
-#  - "mu00": [2, 3]
-#  - "cpu01": [4, 8]
-#  - "cpu02": [9, 10]
-#  - "gpu00": [11, 12]
-#  - "gpu01": [13, 14]
-#  - "gpu02": [15, 16]
-#  - "gpu03": [17, 18]
-a: Easy!
-b:
-  c: 2
-  d: [3, 4]
+url: 'http://localhost:8888/getstatus?a=0&'
+nodes:
+  - name: "mu00"
+    place: [2, 3]
+  - name: "cpu01"
+    place: [4, 8]
+  - name: "cpu02"
+    place: [9, 10]
+  - name: "gpu00"
+    place: [11, 12]
+  - name: "gpu01"
+    place: [13, 14]
+  - name: "gpu02"
+    place: [15, 16]
+  - name: "gpu03"
+    place: [17, 18]
