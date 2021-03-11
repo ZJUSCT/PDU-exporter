@@ -19,3 +19,6 @@
 
 # GoLand
 .idea
+
+# bin
+PDU-exporter
