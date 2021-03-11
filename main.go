@@ -66,14 +66,13 @@ func recordMetrics() {
 			}
 			sb := string(body)
 			s := strings.Split(sb, "?")
-			fmt.Println(s)
-
 
 			for _, node := range config.Nodes {
 				//fmt.Printf("%s %d\n", node.Name, node.Place)
 				for _, place := range node.Place {
 					//fmt.Printf("%d\n", place)
-					powerData.WithLabelValues(node.Name, strconv.Itoa(place)).Set(float64(place) * 10)
+					power, _ := strconv.Atoi(s[34 + (place - 1) * 7])
+					powerData.WithLabelValues(node.Name, strconv.Itoa(place)).Set(float64(power) / 1000)
 				}
 			}
 			time.Sleep(time.Duration(config.Interval) * time.Second)
