@@ -11,6 +11,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -21,13 +23,15 @@ var (
 		Help:      "node power consumption",
 	},
 		[]string{
-		"node",
-		"place",
+			"node",
+			"place",
 		})
+	config conf
 )
 
 type conf struct {
 	Url   string
+	Interval int
 	Nodes []struct {
 		Name  string `yaml:"name"`
 		Place []int  `yaml:",flow"`
@@ -52,9 +56,27 @@ func parseYamlConfig(filename string) conf {
 func recordMetrics() {
 	go func() {
 		for {
-			powerData.WithLabelValues("mu00", "1").Set(233.3)
-			powerData.WithLabelValues("mu00", "2").Set(666.6)
-			time.Sleep(2 * time.Second)
+			resp, err := http.Get(config.Url)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			body, err := ioutil.ReadAll(resp.Body)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			sb := string(body)
+			s := strings.Split(sb, "?")
+			fmt.Println(s)
+
+
+			for _, node := range config.Nodes {
+				//fmt.Printf("%s %d\n", node.Name, node.Place)
+				for _, place := range node.Place {
+					//fmt.Printf("%d\n", place)
+					powerData.WithLabelValues(node.Name, strconv.Itoa(place)).Set(float64(place) * 10)
+				}
+			}
+			time.Sleep(time.Duration(config.Interval) * time.Second)
 		}
 	}()
 }
@@ -72,7 +94,7 @@ func main() {
 			},
 		},
 		Action: func(c *cli.Context) error {
-			config := parseYamlConfig(c.String("config"))
+			config = parseYamlConfig(c.String("config"))
 			fmt.Printf("config:\n%v\n", config)
 
 			recordMetrics()

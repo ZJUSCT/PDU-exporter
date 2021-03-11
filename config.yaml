@@ -1,4 +1,5 @@
 url: 'http://localhost:8888/getstatus?a=0&'
+interval: 1
 nodes:
   - name: "mu00"
     place: [2, 3]
