@@ -16,6 +16,8 @@ import (
 	"time"
 )
 
+const magicOffset = 34
+
 var (
 	powerData = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: "ZJUSCT",
@@ -71,7 +73,7 @@ func recordMetrics() {
 				//fmt.Printf("%s %d\n", node.Name, node.Place)
 				for _, place := range node.Place {
 					//fmt.Printf("%d\n", place)
-					power, _ := strconv.Atoi(s[34 + (place - 1) * 7])
+					power, _ := strconv.Atoi(s[magicOffset + (place - 1) * 7])
 					powerData.WithLabelValues(node.Name, strconv.Itoa(place)).Set(float64(power) / 1000)
 				}
 			}
