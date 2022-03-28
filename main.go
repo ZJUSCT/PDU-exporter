@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	// "fmt"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -91,18 +91,24 @@ func main() {
 				Name:     "config",
 				Aliases:  []string{"c"},
 				Usage:    "Load configuration from `FILE`",
-				Required: true,
+				Value:    "config.yaml",
+				EnvVars:  []string{"PDU_CONFIG_FILE"},
+			},
+			&cli.StringFlag{
+				Name:     "listen",
+				Aliases:  []string{"l"},
+				Usage:    "Listen at `ADDRESS`",
+				Value:    ":2112",
+				EnvVars:  []string{"PDU_LISTEN_ADDRESS"},
 			},
 		},
 		Action: func(c *cli.Context) error {
 			config = parseYamlConfig(c.String("config"))
-			fmt.Printf("config:\n%v\n", config)
+			log.Println("config: %v\n", config)
 
 			recordMetrics()
 			http.Handle("/metrics", promhttp.Handler())
-			_ = http.ListenAndServe(":2112", nil)
-
-			return nil
+			return http.ListenAndServe(c.String("listen"), nil)
 		},
 	}
 
