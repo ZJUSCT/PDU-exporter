@@ -1,7 +1,0 @@
-url: 'http://172.25.2.3/getstatus?a=1&'
-interval: 1
-nodes:
-  - name: "gpu05"
-    place: [5, 6]
-  - name: "m6"
-    place: [7, 8]
